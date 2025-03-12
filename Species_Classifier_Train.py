@@ -3,12 +3,11 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 from tensorflow.keras.models import Model
-# Set the environment variable to disable oneDNN custom operations
+# setting the environment variable to disable oneDNN custom operations
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-# Load and preprocess the data
-data_dir = "C:\\Users\\RAMESH\\Desktop\\codes\\Python Projects\\photo detector\\Image Dataset for Support Vector Machine"  # Replace the Path
-classes = ["cats", "dogs", "human", "horses"]  # Replace with your class names
+data_dir = "C:\\Users\\RAMESH\\Desktop\\codes\\Python Projects\\photo detector\\Image Dataset for Support Vector Machine"  
+classes = ["cats", "dogs", "human", "horses"] 
 image_size = (224, 224)
 batch_size = 32
 
@@ -42,7 +41,7 @@ val_gen = datagen.flow_from_directory(
     subset="validation",
 )
 
-# Create the model
+# creating the model
 base_model = MobileNetV2(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
@@ -54,11 +53,9 @@ for layer in base_model.layers:
 
 model.compile(optimizer="Adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
-# Train the model
+# training the model
 epochs = 20
 model.fit(train_gen, epochs=epochs, validation_data=val_gen)
 
-# Save the model
 model.save("./model.h5")
-
 print(model.summary())
